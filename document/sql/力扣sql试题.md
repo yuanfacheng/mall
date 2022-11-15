@@ -28,7 +28,8 @@ Orders 表：
 +-----------+
 
 # Write your MySQL query statement below
-1 计算两个结果集的差集
+#1计算两个结果集的差集
+#别名不同版本可能有问题
 # select a.Customers from (select d.Id as Id ,d.name as Customers from Customers d
 # union all
 # select c.Id as Id,c.name as Customers from Customers c inner join Orders o on c.id = o.CustomerId) a
@@ -37,7 +38,7 @@ Orders 表：
 
 
 
-2
+#2
 # select customers.name as 'Customers'
 # from customers
 # where customers.id not in
@@ -45,13 +46,13 @@ Orders 表：
 #     select customerid from orders
 # );
 
-3
+#3
 # select name as 'Customers' from customers where not exists (
 # 	select customerId from orders where customerId = customers.id
 # );
 
 
-4
+#4
 # select name as 'Customers' from customers left join orders
 # on customers.id = orders.customerId where isnull(customerId);
 
