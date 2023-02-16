@@ -11,11 +11,17 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.junit.Test;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 商品属性管理Controller
@@ -65,13 +71,79 @@ public class PmsProductAttributeController {
         }
     }
 
+	public class SalePriceLine{
+		Integer size = 10;
+
+		public Integer getSize() {
+			return size;
+		}
+
+		public void setSize(Integer size) {
+			this.size = size;
+		}
+
+		public String getOuCodes() {
+			return ouCodes;
+		}
+
+		public void setOuCodes(String ouCodes) {
+			this.ouCodes = ouCodes;
+		}
+
+		public String getComponyName() {
+			return componyName;
+		}
+
+		public void setComponyName(String componyName) {
+			this.componyName = componyName;
+		}
+
+		String ouCodes;
+		String componyName;
+		public  Integer size(){
+			return this.size;
+		}
+	}
+
     @ApiOperation("查询单个商品属性")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ResponseBody
     public CommonResult<PmsProductAttribute> getItem(@PathVariable Long id) {
-        PmsProductAttribute productAttribute = productAttributeService.getItem(id);
+		PmsProductAttribute productAttribute = productAttributeService.getItem(id);
         return CommonResult.success(productAttribute);
     }
+
+	/**
+	 * 按照公司編碼分組存儲在新的map中，ConcurrentHashMap和HashMap效果一樣
+	 */
+	@Test
+	public  void test(){
+		List<SalePriceLine> lineList = new ArrayList<>();
+		SalePriceLine sp1 = new SalePriceLine();
+		sp1.setOuCodes("111");
+		sp1.setComponyName("com1111");
+		SalePriceLine sp2 = new SalePriceLine();
+		sp2.setOuCodes("222");
+		sp2.setComponyName("com222");
+		SalePriceLine sp3 = new SalePriceLine();
+		sp3.setOuCodes("333");
+		sp3.setComponyName("com333");
+		SalePriceLine sp4 = new SalePriceLine();
+		sp4.setOuCodes("111");
+		sp4.setComponyName("com444");
+
+		lineList.add(sp1);
+		lineList.add(sp2);
+		lineList.add(sp3);
+		lineList.add(sp4);
+		Map<String, Map<Integer, SalePriceLine>> ouLineMap = new ConcurrentHashMap<>(100);
+		for (int i = 0; i < lineList.size(); i++) {
+			SalePriceLine line = lineList.get(i);
+			//如果key不存在則計算得到key的值
+			ouLineMap.computeIfAbsent(line.getOuCodes(), key -> new ConcurrentHashMap<>(16)).put(i,line);
+		}
+		System.out.println(ouLineMap);
+	}
 
     @ApiOperation("批量删除商品属性")
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
