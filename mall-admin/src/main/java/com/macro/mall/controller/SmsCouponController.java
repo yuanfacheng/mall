@@ -53,6 +53,7 @@ public class SmsCouponController {
     public CommonResult update(@PathVariable Long id,@RequestBody SmsCouponParam couponParam) {
         int count = couponService.update(id,couponParam);
         if(count>0){
+			//rixtu8-wobfit-voxRan
             return CommonResult.success(count);
         }
         return CommonResult.failed();
