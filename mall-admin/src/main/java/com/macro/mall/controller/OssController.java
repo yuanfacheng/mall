@@ -1,6 +1,9 @@
 package com.macro.mall.controller;
 
 
+import java.util.Arrays;
+import java.util.List;
+
 import com.macro.mall.common.api.CommonResult;
 import com.macro.mall.dto.OssCallbackResult;
 import com.macro.mall.dto.OssPolicyResult;
@@ -8,6 +11,7 @@ import com.macro.mall.service.OssService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,23 +29,45 @@ import javax.servlet.http.HttpServletRequest;
 @Tag(name = "OssController", description = "Oss对象存储管理")
 @RequestMapping("/aliyun/oss")
 public class OssController {
-    @Autowired
-    private OssService ossService;
+	@Autowired
+	private OssService ossService;
 
-    @ApiOperation(value = "Oss上传签名生成")
-    @RequestMapping(value = "/policy", method = RequestMethod.GET)
-    @ResponseBody
-    public CommonResult<OssPolicyResult> policy() {
-        OssPolicyResult result = ossService.policy();
-        return CommonResult.success(result);
-    }
+	@ApiOperation(value = "Oss上传签名生成")
+	@RequestMapping(value = "/policy", method = RequestMethod.GET)
+	@ResponseBody
+	public CommonResult<OssPolicyResult> policy() {
+		OssPolicyResult result = ossService.policy();
+		return CommonResult.success(result);
+	}
 
-    @ApiOperation(value = "Oss上传成功回调")
-    @RequestMapping(value = "callback", method = RequestMethod.POST)
-    @ResponseBody
-    public CommonResult<OssCallbackResult> callback(HttpServletRequest request) {
-        OssCallbackResult ossCallbackResult = ossService.callback(request);
-        return CommonResult.success(ossCallbackResult);
-    }
+	@ApiOperation(value = "Oss上传成功回调")
+	@RequestMapping(value = "callback", method = RequestMethod.POST)
+	@ResponseBody
+	public CommonResult<OssCallbackResult> callback(HttpServletRequest request) {
+		OssCallbackResult ossCallbackResult = ossService.callback(request);
+		return CommonResult.success(ossCallbackResult);
+	}
+
+
+	public static void printList(List<?> list) {
+		for (Object elem : list)
+			System.out.print(elem + " ");
+		System.out.println();
+	}
+
+	public static void printCommonResultList(CommonResult<?> comm) {
+		comm.getData();
+		System.out.println(comm.getData());
+	}
+
+
+	public static void main(String[] args) {
+		List<Integer> li = Arrays.asList(1, 2, 3);
+
+		List<String> ls = Arrays.asList("one", "two", "three");
+
+		printList(li);
+		printList(ls);
+	}
 
 }
