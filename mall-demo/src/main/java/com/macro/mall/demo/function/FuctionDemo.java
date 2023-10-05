@@ -3,6 +3,7 @@ package com.macro.mall.demo.function;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -93,18 +94,18 @@ class Product {
 //	  抽象方法：R apply(T t)
 //	  用途：表示一个接受一个输入参数并返回一个结果的函数。
 //	  使用场景：当需要对输入参数进行处理，并返回一个结果时，可以使用Function。
-//	  public class SalaryCalculator {
-//	      public static void main(String[] args) {
-//	          Employee employee = new Employee("John", 40, 25.0);
-//	          double salary = calculateSalary(employee, emp -> emp.getHoursWorked() * emp.getHourlyRate());
-//	          System.out.println("Salary: " + salary);
-//	      }
-//
-//	      public static double calculateSalary(Employee employee, Function<Employee, Double> salaryFunction) {
-//	          return salaryFunction.apply(employee);
-//	      }
-//	  }
-//
+class SalaryCalculator {
+	public static void main(String[] args) {
+		Employee employee = new Employee("John", 40, 25.0);
+		double salary = calculateSalary(employee, emp -> emp.getHoursWorked() * emp.getHourlyRate());
+		System.out.println("Salary: " + salary);
+	}
+
+	public static double calculateSalary(Employee employee, Function<Employee, Double> salaryFunction) {
+		return salaryFunction.apply(employee);
+	}
+}
+
 class Employee {
 	private String name;
 
