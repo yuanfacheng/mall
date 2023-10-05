@@ -1,8 +1,11 @@
 package com.macro.mall.demo.juc;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 /**
  * @Description: 多线程, 异步非阻塞, 有返回，不轮询切换线程导致cpu空转
@@ -12,18 +15,20 @@ import java.util.concurrent.TimeUnit;
 public class MyThread {
 	public String name;
 
-//	ThreadPoolExecutor
+	ThreadPoolExecutor threadPoolExecutor = (ThreadPoolExecutor) Executors.newFixedThreadPool(5);
+//	ThreadPoolTaskExecutor threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
 
-	CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(()->{
+	CompletableFuture<String> completableFuture = CompletableFuture.supplyAsync(() -> {
 		System.out.println("111");
-		return  "success";
-	});
+		System.out.println(Thread.currentThread().getName());
+		return "success";
+	}, threadPoolExecutor);
 
 	public static void main(String[] args) {
-		try{
-			System.out.println(Thread.currentThread().getName());
+		try {
 			Thread.sleep(1, TimeUnit.SECONDS.ordinal());
-		}catch (Exception e){
+		}
+		catch (Exception e) {
 			System.out.println("error");
 		}
 		MyThread myThread = new MyThread();
