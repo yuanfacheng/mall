@@ -210,7 +210,11 @@ class ProcessNumbers {
 		numbers.add(4);
 		numbers.add(5);
 
-		processNumbers(numbers, number -> System.out.println("Processing number: " + number));
+		processNumbers(numbers, number -> test());
+	}
+
+	public static void  test(){
+
 	}
 
 	public static void processNumbers(List<Integer> numbers, Consumer<Integer> consumer) {
